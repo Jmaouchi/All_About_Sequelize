@@ -56,10 +56,12 @@ User.sync({ alter: true/*this will update the table without droping it (not like
   });
 }).then((data) => {
   console.log('user added to database');
+  // update the name
   data.username = 'ali';
   return data.save(); // or data.destroy if we want to delete it
 }).then((data) => {
-  console.log("user updated");
+  // if a dataType is an INTEGER, we can increment and decrement it by this method
+  data.increment({age: 1})
   // this data.JSON will return only the data filtred wich is username, password, age and rocks
   console.log(data.toJSON());
 }).catch((err) => {
