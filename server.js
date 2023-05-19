@@ -23,10 +23,14 @@ const User = sequelize.define('user', {
     allowNull: false
   },
   password: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    validate: {
+      len: [2, 8]
+    }
   },
   age: {
     type: DataTypes.INTEGER,
+    // this defaultValue will create a value of 21 if the user doesst specify it
     defaultValue: 21
   },
   rocks: {
@@ -47,23 +51,38 @@ const User = sequelize.define('user', {
 
 // sync the model and table to the database (connect to the database)
 User.sync({ alter: true/*this will update the table without droping it (not like force = true) */ }).then((data) => {
-  // add data to table
-  return User.create({
-    username: 'jugurta',
-    password: '123',
-    age:25,
-    rocks:true 
-  });
+  // add multiple data to table
+  return User.bulkCreate([
+    {
+      username: 'jugurta',
+      password: '1',
+      age:29,
+      rocks:true 
+    },
+    {
+      username: 'ali',
+      password: '32',
+      age:31,
+      rocks:true 
+    },
+    {
+      username: 'yuva',
+      password: '34',
+      age:31,
+      rocks:true 
+    }
+  ], 
+  /* since we used bulkCreate instead of create, and we set a validator on the password, we need to 
+  add this object here to tell sequelize to use the validation*/
+  {validate :true })
 }).then((data) => {
   console.log('user added to database');
+  data.forEach(element => {
   // update the name
-  data.username = 'ali';
-  return data.save(); // or data.destroy if we want to delete it
-}).then((data) => {
-  // if a dataType is an INTEGER, we can increment and decrement it by this method
-  data.increment({age: 1})
-  // this data.JSON will return only the data filtred wich is username, password, age and rocks
-  console.log(data.toJSON());
+  element.username = 'mohand';
+  element.increment({age:1})
+  return element.save(); // or data.destroy if we want to delete it
+  });
 }).catch((err) => {
   console.log(err);
 })
