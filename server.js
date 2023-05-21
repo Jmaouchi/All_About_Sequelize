@@ -74,6 +74,7 @@ User.sync({ alter: true/*this will update the table without droping it (not like
   ], 
   /* since we used bulkCreate instead of create, and we set a validator on the password, we need to 
   add this object here to tell sequelize to use the validation*/
+
   {validate :true })
 }).then((data) => {
   console.log('user added to database');
