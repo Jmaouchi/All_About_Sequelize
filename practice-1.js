@@ -79,9 +79,28 @@ Student.sync({ alter: false }).then((data) => {
       [Op.or]: {favorite_class: 'computer', subscribed_to_wittcode: true}
     }
   })
+  // then find all data that where school_year is < 28
   .then((data) => {
     data.forEach(element => {
       console.log(element.toJSON());
+      if(element.name === 'ayema'){ 
+        console.log('yes');
+      }else{
+        return Student.findAll({
+          attributes: ['school_year'],
+          where:{
+            school_year: {
+              [Op.or]: {
+                [Op.lt]: 28,
+                [Op.eq]: null
+              }
+            }
+          }
+        })
+        .then((data) => {
+          console.log(data);
+        })
+      }
     });
   })
 
@@ -102,7 +121,59 @@ Student.sync({ alter: false }).then((data) => {
     });
   })
 
+
+  // return one student where the school year is < 28 or = 0
+  return Student.findOne({
+    where:{
+      school_year: {
+        [Op.or]: {
+          [Op.lt]: 28,
+          [Op.eq]: null
+        }
+      }
+    }
+  })
+  .then((data) => {
+    console.log(data);
+  }),
+
+
+
+  // findOne or create it. we also added a default value to the school_year
+Student.findOrCreate({
+    where:{
+      name: 'ayema'
+    },
+    defaults: {
+      school_year: '57'
+    }
+  })
+  .then((data) => {
+    // object destructuring 
+    const {result, created} = data;
+    console.log(created);
+  }),
+
+
+  // find where the column is = ayema then count how many we do have with the same name
+  Student.findAndCountAll({
+    where:{
+      name: 'ayema'
+    },
+    // this will log the data without using the toJSON() method
+    raw: true
+  })
+  .then((data) => {
+    // object destructuring 
+    const {count, rows} = data;
+    console.log(count);
+    console.log(rows);
+  }),
+  
+
 })
+
+
 
 
 
