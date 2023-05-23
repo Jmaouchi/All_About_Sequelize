@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 const { DataTypes, Op } = Sequelize;
 const zlib = require('zlib')
 const bcrypt = require('bcrypt');
-const { log } = require('console');
+const { log, error } = require('console');
 // get access to the .env file
 require('dotenv').config();
 
@@ -43,6 +43,21 @@ const Validation = sequelize.define('validation', {
     unique: true,
     validate: {
       isEmail: true
+    },
+    // another validation to check if the created email is inside this array, if so create it and if not throw an error
+    validate:{
+      isIn: ['maouchi@yahoo.com']
+    },
+  },
+  age: {
+    type: DataTypes.INTEGER,
+    // create a outside validation function instead of the built-in validator, like isEmail
+    validate: {
+      isOldEnough(value){
+        if(value < 21 ) {
+          throw new error('hey')
+        }
+      }
     }
   }
 },
@@ -58,7 +73,8 @@ Validation.sync({ alter: false }).then((data) => {
     {
       name: 'jugurta',
       password: "test123",
-      email: "asdasd@yahoo.com"
+      email: "maouchi@yahoo.com",
+      age: 22
     }
   ),
   
