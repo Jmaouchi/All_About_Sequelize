@@ -65,7 +65,7 @@ const GetSet = sequelize.define('getSet', {
       return `${this.name} + ${this.description}`
     }
   }
-
+  
 },
 {
   // mysql will plurielize the tabla name by default (it will add an s at the end, so with this it will freez it and the name will stay the same) 
