@@ -18,9 +18,11 @@
   },
   "homepage": "https://github.com/Jmaouchi/All_About_Sequelize#readme",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "mysql2": "^3.3.1",
-    "sequelize": "^6.31.1"
+    "sequelize": "^6.31.1",
+    "zlib": "^1.0.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
